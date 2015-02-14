@@ -1,7 +1,9 @@
-#![feature(std_misc, core, libc, io, box_syntax)]
+#![feature(std_misc, core, libc, io, box_syntax, plugin)]
+#![plugin(phf_macros)]
 
 extern crate libc;
 extern crate time;
+extern crate phf;
 
 use std::old_io::timer::sleep;
 use std::time::duration::Duration;
@@ -20,14 +22,15 @@ fn main() {
     let original_parent = getppid();
 
     let mut announced: Vec<Box<Event>> = Vec::new();
-    announced.push(box holidays::Valentines::new());
+    holidays::register_all(&mut announced);
 
     while original_parent == getppid() {
-        sleep(Duration::seconds(60));
-
-        let tm = time::now();
+        let now = time::now_utc();
         for event in announced.iter_mut() {
-            event.activate(&tm);
+            event.activate(&now);
         }
+
+        sleep(Duration::seconds(60));
     }
 }
+

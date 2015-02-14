@@ -7,3 +7,8 @@ authors = ["Stacey Ell <stacey.ell@gmail.com>"]
 
 [dependencies]
 time = "*"
+phf = "*"
+phf_macros = "*"
+
+[profile.release]
+lto = true
