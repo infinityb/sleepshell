@@ -1,6 +1,6 @@
 pub mod valentines {
-    use std::num::Int;
-    use std::old_io::stdio::stdout;
+    use std::io::Write;
+    use std::io::stdout;
 
     static VALENTINES: &'static [u8] = include_bytes!("../data/ascii/valentines.txt");
 
@@ -11,7 +11,7 @@ pub mod valentines {
     impl Valentines {
         fn new() -> Valentines {
             Valentines {
-                last_activation_year: Int::min_value(),
+                last_activation_year: i32::min_value(),
             }
         }
     }
@@ -32,7 +32,7 @@ pub mod valentines {
             }
 
             self.last_activation_year = now.tm_year;
-            match stdout().into_inner().write_all(VALENTINES) {
+            match stdout().write_all(VALENTINES) {
                 Ok(()) => (),
                 Err(err) => println!("Some shit broke: {:?}", err),
             }
@@ -41,8 +41,8 @@ pub mod valentines {
 }
 
 pub mod chinesenewyear {
-    use std::num::Int;
-    use std::old_io::stdio::stdout;
+    use std::io::Write;
+    use std::io::stdout;
 
     static SHEEP: &'static [u8] = include_bytes!("../data/ascii/chinesenewyear/sheep.txt");
     static MONKEY: &'static [u8] = include_bytes!("../data/ascii/chinesenewyear/monkey.txt");
@@ -65,7 +65,7 @@ pub mod chinesenewyear {
     impl NewYear {
         fn new() -> NewYear {
             NewYear {
-                last_activation_year: Int::min_value(),
+                last_activation_year: i32::min_value(),
             }
         }
     }
@@ -92,7 +92,7 @@ pub mod chinesenewyear {
                 }
 
                 self.last_activation_year = now.tm_year;
-                match stdout().into_inner().write_all(*art) {
+                match stdout().write_all(*art) {
                     Ok(()) => (),
                     Err(err) => println!("Some shit broke: {:?}", err),
                 }

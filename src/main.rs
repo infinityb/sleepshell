@@ -1,12 +1,11 @@
-#![feature(std_misc, core, libc, io, box_syntax, plugin)]
+#![feature(libc, box_syntax, plugin)]
 #![plugin(phf_macros)]
 
 extern crate libc;
 extern crate time;
 extern crate phf;
 
-use std::old_io::timer::sleep;
-use std::time::duration::Duration;
+use std::thread::sleep_ms;
 
 mod holidays;
 
@@ -14,7 +13,7 @@ fn getppid() -> i32 {
     unsafe { ::libc::funcs::posix88::unistd::getppid() }
 }
 
-trait Event {
+pub trait Event {
     fn activate(&mut self, &::time::Tm);
 }
 
@@ -30,7 +29,7 @@ fn main() {
             event.activate(&now);
         }
 
-        sleep(Duration::seconds(60));
+        sleep_ms(60_000);
     }
 }
 
